@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitcoin Multisig — BitDevs</title>
+    <title>BitDevs</title>
     <style>
         :root {
             --bg: #1a1a2e;
             --surface: #16213e;
-            --surface2: #0f3460;
             --accent: #e94560;
             --text: #eee;
             --text-muted: #aab;
-            --code-bg: #0d1117;
             --border: #2a2a4a;
             --link: #53a8e2;
         }
@@ -27,600 +25,77 @@
             margin: 0 auto;
         }
         h1 {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             margin-bottom: 0.3rem;
             color: #fff;
         }
         .subtitle {
             color: var(--text-muted);
-            font-size: 1rem;
-            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
         }
-        h2 {
-            font-size: 1.5rem;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.4rem;
-            border-bottom: 2px solid var(--accent);
-            color: #fff;
-        }
-        h3 {
-            font-size: 1.15rem;
-            margin-top: 1.5rem;
-            margin-bottom: 0.6rem;
-            color: var(--accent);
-        }
-        p { margin-bottom: 1rem; }
         a { color: var(--link); text-decoration: none; }
         a:hover { text-decoration: underline; }
-        code {
-            background: var(--code-bg);
-            padding: 0.15em 0.4em;
-            border-radius: 4px;
-            font-size: 0.9em;
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-        }
-        pre {
-            background: var(--code-bg);
-            padding: 1rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border);
-        }
-        pre code {
-            background: none;
+        .topic-list {
+            list-style: none;
             padding: 0;
         }
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 1.2rem 1.5rem;
-            margin-bottom: 1.2rem;
-        }
-        .card h3 { margin-top: 0; }
-        .status {
-            display: inline-block;
-            padding: 0.15em 0.6em;
-            border-radius: 12px;
-            font-size: 0.8em;
-            font-weight: 600;
-        }
-        .status-deprecated { background: #5c2a2a; color: #f87171; }
-        .status-active { background: #1a4a2a; color: #4ade80; }
-        .status-emerging { background: #4a3a1a; color: #fbbf24; }
-        .toc {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 1.2rem 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .toc h3 { margin-top: 0; color: var(--text); }
-        .toc ol { padding-left: 1.5rem; }
-        .toc li { margin-bottom: 0.3rem; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1.5rem;
-            font-size: 0.9em;
-        }
-        th, td {
-            padding: 0.6rem 0.8rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-        th {
-            background: var(--surface2);
-            color: #fff;
-            font-weight: 600;
-        }
-        td { background: var(--surface); }
-        .bip-tag {
-            display: inline-block;
-            background: var(--surface2);
-            padding: 0.1em 0.5em;
-            border-radius: 6px;
-            font-size: 0.8em;
-            margin-right: 0.3em;
-        }
-        ul { padding-left: 1.5rem; margin-bottom: 1rem; }
-        li { margin-bottom: 0.3rem; }
-        .tool-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        @media (max-width: 600px) {
-            .tool-grid { grid-template-columns: 1fr; }
-        }
-        .tool-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 1rem;
-        }
-        .tool-card h4 {
-            margin-bottom: 0.3rem;
-            color: var(--accent);
-        }
-        .tool-card p {
-            font-size: 0.9em;
-            color: var(--text-muted);
-            margin-bottom: 0;
-        }
-        .diagram {
-            background: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.2rem;
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-            font-size: 0.85em;
-            overflow-x: auto;
+        .topic-list li {
             margin-bottom: 1rem;
-            white-space: pre;
-            line-height: 1.5;
+        }
+        .topic-card {
+            display: block;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.2rem 1.5rem;
+            transition: border-color 0.2s;
+            text-decoration: none;
+            color: var(--text);
+        }
+        .topic-card:hover {
+            border-color: var(--accent);
+            text-decoration: none;
+        }
+        .topic-card h2 {
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 0.3rem;
+        }
+        .topic-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+        .topic-card .date {
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+        footer {
+            margin-top: 3rem;
+            color: var(--text-muted);
+            font-size: 0.85em;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-<h1>Bitcoin Multisig</h1>
-<p class="subtitle">BitDevs Topic — March 2026</p>
+<h1>BitDevs</h1>
+<p class="subtitle">Technical deep dives into Bitcoin topics</p>
 
-<div class="toc">
-    <h3>Contents</h3>
-    <ol>
-        <li><a href="#overview">Overview of Multisig Approaches</a></li>
-        <li><a href="#bare">Bare Multisig (OP_CHECKMULTISIG)</a></li>
-        <li><a href="#p2sh">P2SH Multisig</a></li>
-        <li><a href="#p2wsh">P2WSH Multisig (SegWit)</a></li>
-        <li><a href="#taproot-key">Taproot Key-Path (MuSig2 / FROST)</a></li>
-        <li><a href="#taproot-script">Taproot Script-Path (OP_CHECKSIGADD)</a></li>
-        <li><a href="#p2sh-deep">P2SH Multisig Deep Dive</a></li>
-        <li><a href="#descriptors">Output Descriptors</a></li>
-        <li><a href="#tools">Current Tools &amp; Ecosystem</a></li>
-        <li><a href="#comparison">Comparison Table</a></li>
-    </ol>
-</div>
-
-<!-- ============================================================ -->
-<h2 id="overview">1. Overview of Multisig Approaches</h2>
-
-<p>Bitcoin multisig has evolved through four distinct eras, each improving on privacy, efficiency, and flexibility. The core idea is the same: require M-of-N keys to authorize a spend. How that requirement is expressed on-chain has changed significantly.</p>
-
-<div class="diagram">Bare Multisig ──▶ P2SH Multisig ──▶ P2WSH Multisig ──▶ Taproot Multisig
-  (2009)            (2012)             (2017)              (2021)
-  BIP 11            BIP 16             BIP 141             BIP 340/341/342
-  Deprecated        Widely used        Current standard    Emerging</div>
-
-<!-- ============================================================ -->
-<h2 id="bare">2. Bare Multisig (OP_CHECKMULTISIG)</h2>
-
-<div class="card">
-    <h3>The Original Approach <span class="status status-deprecated">Deprecated</span></h3>
-    <p>The very first multisig implementation. The entire script — including all public keys — is placed directly in the transaction output's scriptPubKey.</p>
-
-    <h3>How It Worked</h3>
-    <p>The locking script contained all keys and the threshold in plain sight:</p>
-    <pre><code>scriptPubKey:  OP_2 &lt;PubKeyA&gt; &lt;PubKeyB&gt; &lt;PubKeyC&gt; OP_3 OP_CHECKMULTISIG
-scriptSig:     OP_0 &lt;SigA&gt; &lt;SigB&gt;</code></pre>
-    <p>The <code>OP_0</code> at the start of the scriptSig is required due to a long-standing off-by-one bug in <code>OP_CHECKMULTISIG</code> that pops one extra element from the stack.</p>
-
-    <h3>Why It's No Longer Used</h3>
-    <ul>
-        <li><strong>UTXO bloat:</strong> All public keys sit in the UTXO set, which every full node must hold in memory.</li>
-        <li><strong>Non-standard:</strong> Since Bitcoin Core ~v0.10 (2014–15), nodes won't relay bare multisig transactions by default.</li>
-        <li><strong>No privacy:</strong> The spending policy is fully visible before any spend occurs.</li>
-    </ul>
-
-    <p><span class="bip-tag">BIP 11</span> Defined standardness rules for bare multisig.</p>
-</div>
-
-<!-- ============================================================ -->
-<h2 id="p2sh">3. P2SH Multisig</h2>
-
-<div class="card">
-    <h3>Pay-to-Script-Hash <span class="status status-active">Widely Used</span></h3>
-    <p>Activated in 2012, P2SH wraps the multisig script behind a hash. The output only contains a 20-byte hash — no public keys visible until spend time. Addresses start with <code>3</code>.</p>
-
-    <h3>How It Works</h3>
-    <pre><code>scriptPubKey:  OP_HASH160 &lt;Hash160(redeemScript)&gt; OP_EQUAL
-
-redeemScript:  OP_2 &lt;PubKeyA&gt; &lt;PubKeyB&gt; &lt;PubKeyC&gt; OP_3 OP_CHECKMULTISIG
-
-scriptSig:     OP_0 &lt;SigA&gt; &lt;SigB&gt; &lt;redeemScript&gt;</code></pre>
-    <p>Nodes hash the provided redeem script, check it matches the output, then execute the script. The spending policy is only revealed when the UTXO is spent.</p>
-
-    <h3>Pros &amp; Cons</h3>
-    <ul>
-        <li><strong>Pro:</strong> Moves script data out of the UTXO set.</li>
-        <li><strong>Pro:</strong> Policy hidden until spend time.</li>
-        <li><strong>Pro:</strong> Universal wallet and exchange support.</li>
-        <li><strong>Con:</strong> Redeem script limited to 520 bytes (~15-of-15 max).</li>
-        <li><strong>Con:</strong> Full script revealed at spend time.</li>
-        <li><strong>Con:</strong> No witness discount — full-weight signature data.</li>
-    </ul>
-
-    <p><span class="bip-tag">BIP 16</span> P2SH &nbsp; <span class="bip-tag">BIP 13</span> P2SH address format</p>
-</div>
-
-<!-- ============================================================ -->
-<h2 id="p2wsh">4. P2WSH Multisig (SegWit)</h2>
-
-<div class="card">
-    <h3>Pay-to-Witness-Script-Hash <span class="status status-active">Current Standard</span></h3>
-    <p>The SegWit v0 version, activated August 2017. Uses a 32-byte SHA256 hash and moves all signature data into the witness. Addresses use bech32 encoding, starting with <code>bc1q</code>.</p>
-
-    <h3>How It Works</h3>
-    <pre><code>scriptPubKey:  OP_0 &lt;SHA256(witnessScript)&gt;
-
-witness:       OP_0  &lt;SigA&gt;  &lt;SigB&gt;  &lt;witnessScript&gt;
-
-witnessScript: OP_2 &lt;PubKeyA&gt; &lt;PubKeyB&gt; &lt;PubKeyC&gt; OP_3 OP_CHECKMULTISIG</code></pre>
-
-    <h3>Improvements Over P2SH</h3>
-    <ul>
-        <li><strong>Witness discount:</strong> Witness data is counted at &frac14; weight — roughly 30–50% fee savings for multisig.</li>
-        <li><strong>Larger scripts:</strong> Witness scripts can be up to 10,000 bytes (standard policy), removing the 520-byte limit.</li>
-        <li><strong>Malleability fix:</strong> Witness data is excluded from the txid, solving transaction malleability.</li>
-        <li><strong>Stronger hash:</strong> SHA256 (32 bytes, 128-bit collision resistance) vs HASH160 (20 bytes, 80-bit).</li>
-    </ul>
-
-    <p><span class="bip-tag">BIP 141</span> SegWit &nbsp; <span class="bip-tag">BIP 143</span> Signature hashing &nbsp; <span class="bip-tag">BIP 173</span> Bech32 addresses</p>
-</div>
-
-<!-- ============================================================ -->
-<h2 id="taproot-key">5. Taproot Key-Path Multisig (MuSig2 / FROST)</h2>
-
-<div class="card">
-    <h3>Schnorr Aggregate Signatures <span class="status status-emerging">Emerging</span></h3>
-    <p>With Taproot (SegWit v1, November 2021), multiple signers can collaboratively produce a single public key and a single signature. On-chain, the spend is <strong>indistinguishable from a regular single-key payment</strong>. Addresses start with <code>bc1p</code>.</p>
-
-    <h3>MuSig2 (N-of-N)</h3>
-    <p>All N signers combine their keys into one aggregate key. Spending requires a two-round signing ceremony:</p>
-    <div class="diagram">Round 1: Each signer generates + shares nonce commitments
-Round 2: Each signer produces a partial signature
-         ──▶ Partial sigs combine into ONE valid Schnorr signature</div>
-    <p>The result: a single 32-byte key in the output, a single 64-byte signature to spend. No one can tell it was multisig.</p>
-
-    <h3>FROST (T-of-N Threshold)</h3>
-    <p>Flexible Round-Optimized Schnorr Threshold signatures. Any T of N signers can produce a single aggregate signature — without all N participating. Uses distributed key generation (DKG) and Shamir-style secret sharing at the nonce/signing level.</p>
-
-    <h3>On-Chain Footprint</h3>
-    <pre><code>scriptPubKey:  OP_1 &lt;32-byte x-only pubkey&gt;
-witness:       &lt;64-byte Schnorr signature&gt;</code></pre>
-    <p>Identical to any single-sig Taproot spend. Maximum privacy.</p>
-
-    <h3>Trade-offs</h3>
-    <ul>
-        <li><strong>Interactive:</strong> Signers must be online simultaneously for the signing ceremony.</li>
-        <li><strong>MuSig2</strong> has a finalized BIP and early production use (e.g., BitGo 2-of-3).</li>
-        <li><strong>FROST</strong> has working implementations but no finalized Bitcoin BIP yet.</li>
-    </ul>
-
-    <p><span class="bip-tag">BIP 340</span> Schnorr &nbsp; <span class="bip-tag">BIP 341</span> Taproot &nbsp; <span class="bip-tag">BIP 327</span> MuSig2</p>
-</div>
-
-<!-- ============================================================ -->
-<h2 id="taproot-script">6. Taproot Script-Path Multisig (OP_CHECKSIGADD)</h2>
-
-<div class="card">
-    <h3>MAST + Tapscript <span class="status status-active">Available</span></h3>
-    <p>When key-path spending isn't possible (not all signers available, no FROST setup), Taproot allows fallback to script-based multisig using a Merkleized script tree.</p>
-
-    <h3>How the Script Tree Works</h3>
-    <div class="diagram">                    Taproot Output
-                   ┌───────┴───────┐
-              Internal Key      Merkle Root
-                              ┌─────┴─────┐
-                           Leaf A       Leaf B
-                          (A + B)      (A + C)
-                                     ┌───┴───┐
-                                   Leaf C   Leaf D
-                                  (B + C)  (timelock)
-    </div>
-    <p>Each leaf can hold a different spending condition. To spend via script-path, you reveal only the leaf you're using plus a Merkle proof. Other leaves stay hidden.</p>
-
-    <h3>OP_CHECKSIGADD</h3>
-    <p>Replaces the legacy <code>OP_CHECKMULTISIG</code> (which is disabled in tapscript). Checks one key at a time and accumulates a counter:</p>
-    <pre><code>&lt;PubKeyA&gt; OP_CHECKSIG
-&lt;PubKeyB&gt; OP_CHECKSIGADD
-&lt;PubKeyC&gt; OP_CHECKSIGADD
-OP_2 OP_EQUAL</code></pre>
-    <p>Each signer provides a valid signature or empty value. No dummy <code>OP_0</code> bug. Each signature maps to exactly one key.</p>
-
-    <h3>Key-Path vs Script-Path</h3>
-    <ul>
-        <li><strong>Key-path:</strong> Preferred. Cheaper, more private, smaller footprint.</li>
-        <li><strong>Script-path:</strong> Fallback for when interactive signing isn't feasible, or for complex policies (timelocks, recovery paths).</li>
-        <li><strong>Common pattern:</strong> Key-path for the happy case (e.g., 2-of-2 MuSig2), script-path leaves for fallback scenarios.</li>
-    </ul>
-
-    <p><span class="bip-tag">BIP 341</span> Taproot / MAST &nbsp; <span class="bip-tag">BIP 342</span> Tapscript &nbsp; <span class="bip-tag">BIP 340</span> Schnorr</p>
-</div>
-
-<!-- ============================================================ -->
-<h2 id="p2sh-deep">7. P2SH Multisig Deep Dive</h2>
-
-<p>P2SH multisig remains the most widely deployed and understood form of Bitcoin multisig. Here's how it works end to end.</p>
-
-<h3>Setup</h3>
-<ol>
-    <li><strong>Generate keys:</strong> Each participant generates a keypair (typically on a hardware wallet). Only the public key is shared.</li>
-    <li><strong>Agree on parameters:</strong> Decide on M (threshold) and N (total keys), and the key ordering. BIP 67 defines lexicographic key sorting for deterministic multisig.</li>
-    <li><strong>Build the redeem script:</strong>
-        <pre><code>OP_2 &lt;PubKeyA&gt; &lt;PubKeyB&gt; &lt;PubKeyC&gt; OP_3 OP_CHECKMULTISIG</code></pre>
+<ul class="topic-list">
+    <li>
+        <a href="topics/multisig.html" class="topic-card">
+            <h2>Bitcoin Multisig</h2>
+            <p>From bare multisig to Taproot MuSig2 and FROST. Covers P2SH, P2WSH, Schnorr signatures, output descriptors, and the current tool ecosystem.</p>
+            <div class="date">March 2026</div>
+        </a>
     </li>
-    <li><strong>Hash it:</strong> <code>HASH160(redeemScript)</code> → 20-byte hash.</li>
-    <li><strong>Derive the address:</strong> Base58Check encode with version byte 0x05 → starts with <code>3</code>.</li>
-    <li><strong>Back up:</strong> Each participant stores the redeem script (or all public keys + parameters to reconstruct it). Losing the redeem script means losing access to the funds.</li>
-</ol>
+</ul>
 
-<h3>Receiving</h3>
-<p>Receiving is straightforward — share the P2SH address. The sender sees a normal-looking address starting with <code>3</code>. They have no way of knowing it's multisig, what threshold is required, or how many keys are involved.</p>
-
-<h3>Spending</h3>
-<ol>
-    <li><strong>Create the transaction:</strong> Build an unsigned transaction spending from the P2SH UTXO. This is typically done in the coordinator wallet (e.g., Sparrow).</li>
-    <li><strong>Export as PSBT:</strong> The unsigned transaction is serialized as a Partially Signed Bitcoin Transaction (<span class="bip-tag">BIP 174</span> PSBT).</li>
-    <li><strong>Collect signatures:</strong> Pass the PSBT to M of the N signers. Each signs with their key and returns the PSBT with their partial signature added.</li>
-    <li><strong>Combine and finalize:</strong> The coordinator combines all partial PSBTs. Once M signatures are present, the transaction is finalized — the scriptSig is assembled:
-        <pre><code>OP_0 &lt;SigA&gt; &lt;SigB&gt; &lt;redeemScript&gt;</code></pre>
-    </li>
-    <li><strong>Broadcast:</strong> The finalized transaction is broadcast to the network.</li>
-</ol>
-
-<h3>Key Rotation</h3>
-<p>P2SH multisig has no native key rotation mechanism. To rotate a key:</p>
-<ol>
-    <li>Create a new multisig setup with the updated key set.</li>
-    <li>Send all funds from the old multisig address to the new one.</li>
-    <li>This is a normal on-chain transaction — it costs fees and is publicly visible.</li>
-</ol>
-<p>This is one area where Taproot improves things: a key-path spend with MuSig2 makes the rotation transaction look like any other payment.</p>
-
-<!-- ============================================================ -->
-<h2 id="descriptors">8. Output Descriptors</h2>
-
-<div class="card">
-    <h3>What Is an Output Descriptor?</h3>
-    <p>An output descriptor is a human-readable string that fully describes how to derive a set of Bitcoin addresses and how to spend from them. Introduced in Bitcoin Core 0.17 (2018), they replace the older "import a key/address" model with a structured, portable format.</p>
-
-    <p>A descriptor encodes:</p>
-    <ul>
-        <li>The script type (P2SH, P2WSH, P2TR, etc.)</li>
-        <li>The keys involved (xpubs, xprvs, or raw keys)</li>
-        <li>The derivation paths</li>
-        <li>The threshold (for multisig)</li>
-        <li>A checksum for integrity</li>
-    </ul>
-
-    <h3>Descriptor Syntax</h3>
-    <pre><code># Single-sig P2WPKH
-wpkh([fingerprint/derivation]xpub.../0/*)
-
-# 2-of-3 P2SH multisig
-sh(multi(2,
-  [fingerprint1/path1]xpub1.../0/*,
-  [fingerprint2/path2]xpub2.../0/*,
-  [fingerprint3/path3]xpub3.../0/*
-))
-
-# 2-of-3 P2WSH multisig (SegWit)
-wsh(sortedmulti(2,
-  [fingerprint1/path1]xpub1.../0/*,
-  [fingerprint2/path2]xpub2.../0/*,
-  [fingerprint3/path3]xpub3.../0/*
-))
-
-# Taproot (single key)
-tr([fingerprint/path]xpub.../0/*)</code></pre>
-
-    <h3>Key Functions</h3>
-    <table>
-        <tr><th>Function</th><th>Description</th></tr>
-        <tr><td><code>pk(KEY)</code></td><td>Raw public key</td></tr>
-        <tr><td><code>multi(M, KEY, KEY, ...)</code></td><td>M-of-N multisig (key order matters)</td></tr>
-        <tr><td><code>sortedmulti(M, KEY, ...)</code></td><td>M-of-N multisig (keys sorted lexicographically)</td></tr>
-        <tr><td><code>sh(...)</code></td><td>Wrap in P2SH</td></tr>
-        <tr><td><code>wsh(...)</code></td><td>Wrap in P2WSH</td></tr>
-        <tr><td><code>tr(KEY)</code> / <code>tr(KEY, TREE)</code></td><td>Taproot output (key-path, optional script tree)</td></tr>
-    </table>
-
-    <p><span class="bip-tag">BIP 380</span> Output descriptors (general) &nbsp; <span class="bip-tag">BIP 381</span> Non-segwit descriptors &nbsp; <span class="bip-tag">BIP 382</span> SegWit descriptors &nbsp; <span class="bip-tag">BIP 383</span> Multisig descriptors &nbsp; <span class="bip-tag">BIP 386</span> Taproot descriptors</p>
-</div>
-
-<h3>Setting Up Different Accounts</h3>
-<p>Output descriptors use BIP 44/48/84/86-style derivation paths to separate accounts. The account index (third level) creates distinct address spaces from the same seed:</p>
-
-<pre><code># Account 0 — e.g., main savings (2-of-3 P2WSH)
-wsh(sortedmulti(2,
-  [aabbccdd/48h/0h/0h/2h]xpub.../0/*,
-  [eeff0011/48h/0h/0h/2h]xpub.../0/*,
-  [22334455/48h/0h/0h/2h]xpub.../0/*
-))
-
-# Account 1 — e.g., spending wallet (2-of-3 P2WSH)
-wsh(sortedmulti(2,
-  [aabbccdd/48h/0h/1h/2h]xpub.../0/*,
-  [eeff0011/48h/0h/1h/2h]xpub.../0/*,
-  [22334455/48h/0h/1h/2h]xpub.../0/*
-))
-                          ▲
-                    account index</code></pre>
-
-<h3>Writing a New Descriptor</h3>
-<ol>
-    <li><strong>Choose the script type:</strong> <code>wsh(sortedmulti(...))</code> for P2WSH multisig, <code>sh(multi(...))</code> for P2SH, <code>tr(...)</code> for Taproot.</li>
-    <li><strong>Gather xpubs:</strong> Export the extended public key from each hardware wallet at the correct derivation path:
-        <ul>
-            <li>P2SH multisig: <code>m/45h</code> or <code>m/48h/0h/0h/1h</code></li>
-            <li>P2WSH multisig: <code>m/48h/0h/0h/2h</code></li>
-            <li>Taproot: <code>m/86h/0h/0h</code></li>
-        </ul>
-    </li>
-    <li><strong>Include fingerprints:</strong> Each key should include the master fingerprint and derivation path in square brackets: <code>[aabbccdd/48h/0h/0h/2h]xpub...</code></li>
-    <li><strong>Set the threshold:</strong> First argument to <code>multi()</code> or <code>sortedmulti()</code>.</li>
-    <li><strong>Add the wildcard:</strong> Append <code>/0/*</code> for receive addresses, <code>/1/*</code> for change addresses. You need two descriptors per account (receive + change).</li>
-    <li><strong>Compute checksum:</strong> Use <code>bitcoin-cli getdescriptorinfo "your_descriptor"</code> to get the checksum-appended version.</li>
-</ol>
-
-<!-- ============================================================ -->
-<h2 id="tools">9. Current Tools</h2>
-
-<h3>Coordinator Software — Traditional Multisig (P2SH / P2WSH)</h3>
-<div class="tool-grid">
-    <div class="tool-card">
-        <h4>Sparrow Wallet</h4>
-        <p>Full-featured desktop Bitcoin wallet. Best-in-class multisig coordinator — supports PSBT, output descriptors, P2SH, P2WSH. Connects to your own node via Electrum or Bitcoin Core. Taproot multisig not yet supported.</p>
-    </div>
-    <div class="tool-card">
-        <h4>Blue Wallet</h4>
-        <p>Mobile Bitcoin wallet (iOS/Android) with multisig vault support. Guided setup flow, PSBT round-trips via QR codes or files. Good for mobile-first multisig workflows.</p>
-    </div>
-</div>
-
-<h3>Coordinator Software — Schnorr / Taproot Multisig</h3>
-<div class="tool-grid">
-    <div class="tool-card">
-        <h4>Nunchuk <span class="status status-emerging">Beta</span></h4>
-        <p>Taproot multisig wallet using MuSig2 (BIP 327) for key-path + script-path fallback. M-of-N up to 5 keys. Currently software (hot) keys only — hardware signer support planned. Launched Dec 2024.</p>
-    </div>
-    <div class="tool-card">
-        <h4>Stack Wallet <span class="status status-emerging">v2.0</span></h4>
-        <p>Mobile wallet with FROST multisig via the modular-frost library (IETF-compliant, BIP-340 compatible). Built with Kayaba from the Serai project. Desktop coming soon.</p>
-    </div>
-    <div class="tool-card">
-        <h4>Liana (Wizardsardine)</h4>
-        <p>Taproot + Miniscript wallet with timelocked recovery paths. Working toward MuSig2 integration. Hardware support: Ledger (production), Coldcard (edge), BitBox02 (v8+), Specter DIY.</p>
-    </div>
-    <div class="tool-card">
-        <h4>Bitkey (Block, Inc.) <span class="status status-active">Shipping</span></h4>
-        <p>Consumer 2-of-3 multisig: mobile key + hardware device + Block server. Uses MuSig2 for Taproot signing. Shipping since March 2024. Inheritance feature launched Jan 2025.</p>
-    </div>
-</div>
-
-<h3>Hardware Wallets — Traditional Multisig</h3>
-<div class="tool-grid">
-    <div class="tool-card">
-        <h4>SeedSigner</h4>
-        <p>DIY, air-gapped signing device (Raspberry Pi Zero). Stateless — no stored keys. QR-code PSBT signing. Open source. ~$50 in parts. Sovereignty-focused.</p>
-    </div>
-    <div class="tool-card">
-        <h4>Keystone</h4>
-        <p>Air-gapped hardware wallet with touchscreen. QR-code only communication. Supports multisig with Sparrow, Blue Wallet, and others. Open-source firmware.</p>
-    </div>
-    <div class="tool-card">
-        <h4>Foundation Passport</h4>
-        <p>Premium air-gapped hardware wallet. QR and microSD. Open-source firmware and hardware. Strong PSBT multisig support.</p>
-    </div>
-    <div class="tool-card">
-        <h4>Coldcard (Mk4/Q)</h4>
-        <p>Bitcoin-only hardware wallet. MicroSD/USB PSBT workflow. On-device multisig registration. Advanced: duress PINs, brick-me PIN, HSM mode. Edge firmware adds Taproot tapscript multisig (OP_CHECKSIGADD).</p>
-    </div>
-</div>
-
-<h3>Hardware Wallets — Schnorr / Taproot Multisig</h3>
-<div class="tool-grid">
-    <div class="tool-card">
-        <h4>Frostsnap <span class="status status-active">Shipping</span></h4>
-        <p>Australian-built FROST hardware wallet. Devices daisy-chain via USB-C for distributed key generation — no single device ever holds the complete secret. Spends appear as standard Taproot single-sig on-chain. ESP32-C3 RISC-V, memory-safe Rust firmware. MIT licensed. 150k sats/device.</p>
-        <p><strong>Team:</strong> Lloyd Fournier (cryptographer), Nick Farrow (engineer). Co-discoverers of the "Dark Skippy" attack on HW wallet nonce generation.</p>
-    </div>
-    <div class="tool-card">
-        <h4>Ledger (Nano S+/X/Stax) <span class="status status-active">Production</span></h4>
-        <p>Most advanced MuSig2 support among traditional HW wallets. Bitcoin App v2.4.0 supports MuSig2 in key-path and script-path. Taproot-Miniscript in production. Works with Liana and Nunchuk.</p>
-    </div>
-    <div class="tool-card">
-        <h4>Coldcard (Edge Firmware)</h4>
-        <p>Edge firmware supports Taproot keyspend and tapscript multisig via <code>sortedmulti_a</code> (OP_CHECKSIGADD). BIP-388 miniscript format. Up to 32 signers. Not yet in stable firmware.</p>
-    </div>
-    <div class="tool-card">
-        <h4>BitBox02</h4>
-        <p>Taproot single-sig since 2022. Works with Liana for Taproot descriptors. ShiftCrypto actively exploring MuSig2/FROST but no shipping implementation yet.</p>
-    </div>
-</div>
-
-<h3>Notable Implementations &amp; Standards</h3>
-<div class="tool-grid">
-    <div class="tool-card">
-        <h4>libsecp256k1 v0.6.0</h4>
-        <p>Upstream MuSig2 module (BIP 327) merged into the canonical library. Bitcoin Core PR #31244 implements MuSig2 descriptor parsing (BIP 390).</p>
-    </div>
-    <div class="tool-card">
-        <h4>BitGo MuSig2 <span class="status status-active">Production</span></h4>
-        <p>First production MuSig2 taproot multisig wallet (2023). Three-path design: MuSig2 key-path (user+BitGo), tapscript fallbacks. Key-path: 57.5 vB vs 104.5 vB for native SegWit. Novel deterministic nonce scheme for stateless HSM signing.</p>
-    </div>
-    <div class="tool-card">
-        <h4>ChillDKG (Blockstream)</h4>
-        <p>Proposed BIP for standardized FROST distributed key generation. Based on SimplPedPop with pairwise ECDH. Active development, v0.2.0 Dec 2024.</p>
-    </div>
-    <div class="tool-card">
-        <h4>BIP 445 — FROST Signing</h4>
-        <p>Proposed BIP for FROST signing compatible with BIP 340 keys/signatures. Supports BIP 32 child key derivation and BIP 341 tweaking. Active development through 2026.</p>
-    </div>
-</div>
-
-<!-- ============================================================ -->
-<h2 id="comparison">10. Comparison Table</h2>
-
-<table>
-    <tr>
-        <th>Approach</th>
-        <th>On-Chain Size</th>
-        <th>Keys Visible</th>
-        <th>Fee Efficiency</th>
-        <th>Privacy</th>
-        <th>Status</th>
-    </tr>
-    <tr>
-        <td>Bare Multisig</td>
-        <td>Large (keys in output)</td>
-        <td>At funding</td>
-        <td>Worst</td>
-        <td>Worst</td>
-        <td><span class="status status-deprecated">Deprecated</span></td>
-    </tr>
-    <tr>
-        <td>P2SH Multisig</td>
-        <td>Hash in output</td>
-        <td>At spend</td>
-        <td>Moderate</td>
-        <td>Moderate</td>
-        <td><span class="status status-active">Widely Used</span></td>
-    </tr>
-    <tr>
-        <td>P2WSH Multisig</td>
-        <td>Hash in output</td>
-        <td>At spend</td>
-        <td>Good</td>
-        <td>Moderate</td>
-        <td><span class="status status-active">Current Standard</span></td>
-    </tr>
-    <tr>
-        <td>Taproot Key-Path</td>
-        <td>Single key + single sig</td>
-        <td>Never</td>
-        <td>Best</td>
-        <td>Best</td>
-        <td><span class="status status-emerging">Emerging</span></td>
-    </tr>
-    <tr>
-        <td>Taproot Script-Path</td>
-        <td>Key + proof + leaf</td>
-        <td>One leaf only</td>
-        <td>Good</td>
-        <td>Good</td>
-        <td><span class="status status-active">Available</span></td>
-    </tr>
-</table>
-
-<p style="margin-top: 3rem; color: var(--text-muted); font-size: 0.85em; text-align: center;">
-    BitDevs — Bitcoin Multisig — March 2026
-</p>
+<footer>BitDevs</footer>
 
 </body>
 </html>
