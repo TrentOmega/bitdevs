@@ -219,6 +219,9 @@ scriptSig:     OP_0 &lt;SigA&gt; &lt;SigB&gt;</code></pre>
         <li><strong>No privacy:</strong> The spending policy is fully visible before any spend occurs.</li>
     </ul>
 
+    <h3>Derivation Path</h3>
+    <p>No standard derivation path — bare multisig predates HD wallet standards. Raw keys were typically used.</p>
+
     <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki" class="bip-tag" target="_blank">BIP 11</a> Defined standardness rules for bare multisig.</p>
 </div>
 
@@ -247,7 +250,11 @@ scriptSig:     OP_0 &lt;SigA&gt; &lt;SigB&gt; &lt;redeemScript&gt;</code></pre>
         <li><strong>Con:</strong> No witness discount — full-weight signature data.</li>
     </ul>
 
-    <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki" class="bip-tag" target="_blank">BIP 16</a> P2SH &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki" class="bip-tag" target="_blank">BIP 13</a> P2SH address format</p>
+    <h3>Derivation Path</h3>
+    <pre><code>m/45h/0/0/*          — BIP 45 (older, purpose-based)
+m/48h/0h/0h/1h/0/*   — BIP 48, script type 1h = P2SH multisig</code></pre>
+
+    <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki" class="bip-tag" target="_blank">BIP 16</a> P2SH &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki" class="bip-tag" target="_blank">BIP 13</a> P2SH address format &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0045.mediawiki" class="bip-tag" target="_blank">BIP 45</a> Derivation &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0048.mediawiki" class="bip-tag" target="_blank">BIP 48</a> Script types</p>
 </div>
 
 <!-- ============================================================ -->
@@ -272,7 +279,10 @@ witnessScript: OP_2 &lt;PubKeyA&gt; &lt;PubKeyB&gt; &lt;PubKeyC&gt; OP_3 OP_CHEC
         <li><strong>Stronger hash:</strong> SHA256 (32 bytes, 128-bit collision resistance) vs HASH160 (20 bytes, 80-bit).</li>
     </ul>
 
-    <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki" class="bip-tag" target="_blank">BIP 141</a> SegWit &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki" class="bip-tag" target="_blank">BIP 143</a> Signature hashing &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki" class="bip-tag" target="_blank">BIP 173</a> Bech32 addresses</p>
+    <h3>Derivation Path</h3>
+    <pre><code>m/48h/0h/0h/2h/0/*   — BIP 48, script type 2h = P2WSH multisig</code></pre>
+
+    <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki" class="bip-tag" target="_blank">BIP 141</a> SegWit &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki" class="bip-tag" target="_blank">BIP 143</a> Signature hashing &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki" class="bip-tag" target="_blank">BIP 173</a> Bech32 addresses &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0048.mediawiki" class="bip-tag" target="_blank">BIP 48</a> Script types</p>
 </div>
 
 <!-- ============================================================ -->
@@ -304,7 +314,11 @@ witness:       &lt;64-byte Schnorr signature&gt;</code></pre>
         <li><strong>FROST</strong> has working implementations but no finalized Bitcoin BIP yet.</li>
     </ul>
 
-    <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki" class="bip-tag" target="_blank">BIP 340</a> Schnorr &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki" class="bip-tag" target="_blank">BIP 341</a> Taproot &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0327.mediawiki" class="bip-tag" target="_blank">BIP 327</a> MuSig2</p>
+    <h3>Derivation Path</h3>
+    <pre><code>m/86h/0h/0h/0/*      — BIP 86, Taproot single-sig (used as base for key-path multisig)
+m/48h/0h/0h/3h/0/*   — BIP 48, script type 3h = P2TR multisig (emerging convention)</code></pre>
+
+    <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki" class="bip-tag" target="_blank">BIP 340</a> Schnorr &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki" class="bip-tag" target="_blank">BIP 341</a> Taproot &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0327.mediawiki" class="bip-tag" target="_blank">BIP 327</a> MuSig2 &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0086.mediawiki" class="bip-tag" target="_blank">BIP 86</a> Taproot derivation</p>
 </div>
 
 <!-- ============================================================ -->
@@ -341,6 +355,9 @@ OP_2 OP_EQUAL</code></pre>
         <li><strong>Script-path:</strong> Fallback for when interactive signing isn't feasible, or for complex policies (timelocks, recovery paths).</li>
         <li><strong>Common pattern:</strong> Key-path for the happy case (e.g., 2-of-2 MuSig2), script-path leaves for fallback scenarios.</li>
     </ul>
+
+    <h3>Derivation Path</h3>
+    <pre><code>m/48h/0h/0h/3h/0/*   — Same as key-path (BIP 48, script type 3h)</code></pre>
 
     <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki" class="bip-tag" target="_blank">BIP 341</a> Taproot / MAST &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0342.mediawiki" class="bip-tag" target="_blank">BIP 342</a> Tapscript &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki" class="bip-tag" target="_blank">BIP 340</a> Schnorr</p>
 </div>
@@ -660,7 +677,7 @@ wsh(sortedmulti(2,
 <table>
     <tr>
         <th>Approach</th>
-        <th>On-Chain Size</th>
+        <th>Derivation Path</th>
         <th>Keys Visible</th>
         <th>Fee Efficiency</th>
         <th>Privacy</th>
@@ -668,7 +685,7 @@ wsh(sortedmulti(2,
     </tr>
     <tr>
         <td>Bare Multisig</td>
-        <td>Large (keys in output)</td>
+        <td>N/A (pre-HD)</td>
         <td>At funding</td>
         <td>Worst</td>
         <td>Worst</td>
@@ -676,7 +693,7 @@ wsh(sortedmulti(2,
     </tr>
     <tr>
         <td>P2SH Multisig</td>
-        <td>Hash in output</td>
+        <td><code>m/48h/0h/0h/1h</code></td>
         <td>At spend</td>
         <td>Moderate</td>
         <td>Moderate</td>
@@ -684,7 +701,7 @@ wsh(sortedmulti(2,
     </tr>
     <tr>
         <td>P2WSH Multisig</td>
-        <td>Hash in output</td>
+        <td><code>m/48h/0h/0h/2h</code></td>
         <td>At spend</td>
         <td>Good</td>
         <td>Moderate</td>
@@ -692,7 +709,7 @@ wsh(sortedmulti(2,
     </tr>
     <tr>
         <td>Taproot Key-Path</td>
-        <td>Single key + single sig</td>
+        <td><code>m/86h/0h/0h</code> or <code>m/48h/0h/0h/3h</code></td>
         <td>Never</td>
         <td>Best</td>
         <td>Best</td>
@@ -700,7 +717,7 @@ wsh(sortedmulti(2,
     </tr>
     <tr>
         <td>Taproot Script-Path</td>
-        <td>Key + proof + leaf</td>
+        <td><code>m/48h/0h/0h/3h</code></td>
         <td>One leaf only</td>
         <td>Good</td>
         <td>Good</td>
