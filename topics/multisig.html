@@ -181,6 +181,7 @@
         <li><a href="#p2wsh">P2WSH Multisig (SegWit)</a></li>
         <li><a href="#taproot-key">Taproot Key-Path (MuSig2 / FROST)</a></li>
         <li><a href="#taproot-script">Taproot Script-Path (OP_CHECKSIGADD)</a></li>
+        <li><a href="#taproot-patterns">Five Taproot Multisig Patterns (Jimmy Song)</a></li>
         <li><a href="#p2sh-deep">P2SH Multisig Deep Dive</a></li>
         <li><a href="#descriptors">Output Descriptors</a></li>
         <li><a href="#tools">Current Tools &amp; Ecosystem</a></li>
@@ -343,6 +344,93 @@ OP_2 OP_EQUAL</code></pre>
 
     <p><a href="https://github.com/bitcoin/bips/blob/master/bip-0341.mediawiki" class="bip-tag" target="_blank">BIP 341</a> Taproot / MAST &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0342.mediawiki" class="bip-tag" target="_blank">BIP 342</a> Tapscript &nbsp; <a href="https://github.com/bitcoin/bips/blob/master/bip-0340.mediawiki" class="bip-tag" target="_blank">BIP 340</a> Schnorr</p>
 </div>
+
+<!-- ============================================================ -->
+<h2 id="taproot-patterns">6b. Five Taproot Multisig Patterns</h2>
+
+<p>Jimmy Song's <a href="https://jimmysong.github.io/taproot-multisig/" target="_blank">Taproot Multisig</a> presentation (<a href="https://btctranscripts.com/advancing-bitcoin/2022/2022-03-03-jimmy-song-taproot-multisig" target="_blank">Advancing Bitcoin 2022</a>) lays out five distinct patterns, progressing from simplest to most sophisticated. Each trades off complexity for privacy and fee savings.</p>
+
+<div class="card">
+    <h3>Pattern 1: Single Leaf k-of-n TapScript</h3>
+    <p>The simplest Taproot multisig — closest to traditional P2WSH. One tapscript leaf holds a single k-of-n script using <code>OP_CHECKSIGADD</code>.</p>
+    <div class="diagram">Taproot Output
+  ├── Internal Key (unspendable or MuSig aggregate)
+  └── Script Tree
+        └── Leaf: &lt;PubA&gt; CHECKSIG &lt;PubB&gt; CHECKSIGADD &lt;PubC&gt; CHECKSIGADD 2 EQUAL</div>
+    <ul>
+        <li><strong>Pro:</strong> Non-interactive — signers can be chosen on the fly, just like legacy multisig.</li>
+        <li><strong>Con:</strong> Reveals all pubkeys on-chain at spend time. Larger on-chain footprint.</li>
+        <li><strong>Reality:</strong> What most hardware wallets implement first, because it's closest to what they already know.</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>Pattern 2: Multi-Leaf k-of-k TapScript</h3>
+    <p>Instead of one leaf with all keys, create a separate leaf for each valid signer combination. For a 2-of-3, that's three leaves: (A+B), (A+C), (B+C).</p>
+    <div class="diagram">Taproot Output
+  ├── Internal Key
+  └── Script Tree
+        ├── Leaf 1: &lt;PubA&gt; CHECKSIGVERIFY &lt;PubB&gt; CHECKSIG
+        ├── Leaf 2: &lt;PubA&gt; CHECKSIGVERIFY &lt;PubC&gt; CHECKSIG
+        └── Leaf 3: &lt;PubB&gt; CHECKSIGVERIFY &lt;PubC&gt; CHECKSIG</div>
+    <ul>
+        <li><strong>Pro:</strong> Only the spending leaf's pubkeys are revealed — unused combinations stay hidden.</li>
+        <li><strong>Pro:</strong> Smaller per-spend footprint than single-leaf (fewer keys revealed).</li>
+        <li><strong>Con:</strong> Signers must be predetermined. Number of leaves grows combinatorially: C(n,k).</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>Pattern 3: Multi-Leaf MuSig TapScript</h3>
+    <p>Same multi-leaf structure, but each leaf uses a MuSig <strong>aggregate key</strong> instead of listing individual keys. The leaf contains a single pubkey and requires a single signature.</p>
+    <div class="diagram">Taproot Output
+  ├── Internal Key
+  └── Script Tree
+        ├── Leaf 1: &lt;MuSig(A,B)&gt; CHECKSIG
+        ├── Leaf 2: &lt;MuSig(A,C)&gt; CHECKSIG
+        └── Leaf 3: &lt;MuSig(B,C)&gt; CHECKSIG</div>
+    <ul>
+        <li><strong>Pro:</strong> Maximum privacy — individual pubkeys are <strong>never</strong> revealed on-chain.</li>
+        <li><strong>Pro:</strong> Smallest on-chain footprint: one key, one signature per spend.</li>
+        <li><strong>Con:</strong> Requires interactive nonce exchange (MuSig2 signing ceremony).</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>Pattern 4: "Everything" Multisig</h3>
+    <p>Combine all the above in a single Taproot address. Different leaves use different strategies, allowing dynamic selection based on signer availability and privacy preference.</p>
+    <div class="diagram">Taproot Output
+  ├── Key Path: MuSig(A,B,C)  ← n-of-n, best case
+  └── Script Tree
+        ├── MuSig leaves (A+B), (A+C), (B+C)  ← k-of-k MuSig
+        ├── k-of-k bare leaves  ← fallback if MuSig unavailable
+        └── Single leaf k-of-n  ← last resort</div>
+    <ul>
+        <li>Key-path (MuSig n-of-n) is cheapest and most private — used when all signers cooperate.</li>
+        <li>MuSig leaves used when only k signers are available and they can interact.</li>
+        <li>Bare leaves as fallback when interaction isn't possible.</li>
+        <li>MAST efficiency: additional tree levels cost minimal extra data.</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>Pattern 5: Degrading Multisig with Timelocks</h3>
+    <p>Add timelocked fallback branches that require fewer signatures as time passes. Enables inheritance planning and key-loss recovery.</p>
+    <div class="diagram">Taproot Output
+  ├── Key Path: MuSig(A,B,C)  ← normal spend (3-of-3)
+  └── Script Tree
+        ├── 2-of-3 leaves  ← available immediately
+        ├── 1-of-3 leaves + OP_CSV 52560  ← after ~1 year
+        └── Recovery key + OP_CSV 105120  ← after ~2 years</div>
+    <ul>
+        <li><strong>Use case:</strong> If you lose a key, wait for the timelock and spend with fewer keys.</li>
+        <li><strong>Inheritance:</strong> Heirs can access funds after a defined period without needing all keys.</li>
+        <li><strong>Important:</strong> Requires periodic fund movement to reset timelocks and prevent security degradation.</li>
+        <li>Uses <code>OP_CHECKSEQUENCEVERIFY</code> (<a href="https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki" class="bip-tag" target="_blank">BIP 112</a>) for relative timelocks.</li>
+    </ul>
+</div>
+
+<p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9em;">Source: <a href="https://jimmysong.github.io/taproot-multisig/" target="_blank">Jimmy Song — Taproot Multisig</a> | <a href="https://btctranscripts.com/advancing-bitcoin/2022/2022-03-03-jimmy-song-taproot-multisig" target="_blank">Full transcript</a> | <a href="https://github.com/jimmysong/taproot-multisig" target="_blank">GitHub</a></p>
 
 <!-- ============================================================ -->
 <h2 id="p2sh-deep">7. P2SH Multisig Deep Dive</h2>
